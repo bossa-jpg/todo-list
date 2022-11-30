@@ -50,24 +50,6 @@ export const Task = ({ task, removeTask, editTask, completeTask }) => {
     descriptionClass += " text_failed";
   }
 
-  console.log(attachment);
-
-  const readFile = (file) => {
-    const imageGrid = document.getElementById("image-grid");
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    isShowFile
-      ? reader.addEventListener("load", (event) => {
-          const img = document.createElement("img");
-          imageGrid.appendChild(img);
-          img.id = "attachment-file";
-          img.src = event.target.result;
-          img.alt = file.name;
-        })
-      : document
-          .getElementById("image-grid")
-          .removeChild(document.getElementById("attachment-file"));
-  };
   return (
     <div
       className={
@@ -123,15 +105,23 @@ export const Task = ({ task, removeTask, editTask, completeTask }) => {
       {isShowDescription ? (
         <div className={descriptionClass}>
           <p>{description}</p>
-          <p
-            onClick={() => {
-              setIsShowFile(!isShowFile);
-              readFile(attachment);
-            }}
-          >
-            {attachment.name ? attachment.name : ""}
-          </p>
-          <div id="image-grid"></div>
+          {attachment !== {} ? (
+            <div>
+              <p
+                onClick={() => {
+                  console.log(attachment);
+                  setIsShowFile(!isShowFile);
+                }}
+              >
+                {attachment.name}
+              </p>
+              <div id="image-grid">
+                <img src={attachment.file} alt="attachment"></img>
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       ) : (
         ""

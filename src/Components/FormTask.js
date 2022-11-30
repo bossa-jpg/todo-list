@@ -45,7 +45,16 @@ export const FormTask = ({ task, handleChange }) => {
           id="attachment"
           onChange={(e) => {
             e.preventDefault();
-            handleChange("attachment", e.target.files[0]);
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = () => {
+              handleChange("attachment", {
+                name: file.name,
+                type: file.type,
+                file: reader.result,
+              });
+            };
+            reader.readAsDataURL(file);
           }}
         />
       </div>
